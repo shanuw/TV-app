@@ -10,58 +10,70 @@
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     
     <style>
-        body { background-color: #0d0d0d; color: white; }
-        .hero { background: #1a1a1a; padding: 40px 0; text-align: center; border-bottom: 3px solid #ff0000; }
+        body { background-color: #0d0d0d; color: white; font-family: 'Segoe UI', sans-serif; }
+        .hero { background: #1a1a1a; padding: 40px 0; text-align: center; border-bottom: 3px solid #ff0000; margin-bottom: 20px; }
+        .player-section { background: #000; padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(255,0,0,0.2); }
         .channel-card { 
-            background: #1a1a1a; border: 1px solid #333; border-radius: 15px; 
-            transition: 0.3s; cursor: pointer; margin-bottom: 20px;
+            background: #1a1a1a; border: 1px solid #333; border-radius: 12px; 
+            transition: 0.3s; cursor: pointer; height: 100%;
         }
-        .channel-card:hover { border-color: #ff0000; transform: scale(1.02); }
-        .card-img-top { height: 80px; object-fit: contain; padding: 10px; background: #fff; border-radius: 10px 10px 0 0; }
-        #player-container { display: none; background: #000; padding: 20px; border-radius: 15px; margin-bottom: 30px; }
+        .channel-card:hover { border-color: #ff0000; transform: scale(1.03); }
+        .card-img-top { height: 100px; object-fit: contain; padding: 15px; background: #fff; border-radius: 12px 12px 0 0; }
+        .card-title { font-size: 1rem; margin-top: 10px; color: #fff; text-align: center; }
+        .btn-direct { background-color: #ff0000; color: white; border: none; padding: 5px 15px; border-radius: 5px; text-decoration: none; display: inline-block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="hero mb-4">
-        <h1>📺 SL SMART TV</h1>
-        <p>නොමිලේ නාලිකා නරඹන්න</p>
+    <div class="hero">
+        <h1 class="fw-bold text-uppercase">📺 SL SMART TV HUB</h1>
+        <p class="text-secondary">සජීවී රූපවාහිනී නාලිකා - Dialog Free Data පහසුකම සහිතයි</p>
     </div>
 
     <div class="container">
-        <div id="player-container" class="shadow-lg">
-            <h4 id="channel-name" class="text-warning mb-3">Channel Name</h4>
-            <div class="video-box">
-                <video id="my-video" class="video-js vjs-default-skin vjs-16-9" controls preload="auto" width="640">
-                    <source src="" type="application/x-mpegURL">
+        <div class="player-section text-center">
+            <h4 id="ch-name" class="text-warning mb-3">නාලිකාවක් තෝරන්න</h4>
+            <div class="video-box mx-auto" style="max-width: 800px;">
+                <video id="tv-player" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls preload="auto" data-setup='{}'>
+                    <source src="https://itn.itnapi.atndigital.com/itn/live/playlist.m3u8" type="application/x-mpegURL">
                 </video>
             </div>
-            <div class="mt-3 text-center">
-                <p class="small text-danger">වීඩියෝව ප්ලේ නොවන්නේ නම් පහත බොත්තම ඔබන්න:</p>
-                <a id="external-link" href="#" target="_blank" class="btn btn-sm btn-outline-warning">ඩේටා කැපෙන්නේ නැතිව බලන්න (Direct)</a>
+            <div id="direct-btn-area" class="mt-3" style="display:none;">
+                <p class="small text-danger">ප්ලේයර් එකේ වැඩ නොකරන්නේ නම් මෙම බොත්තම ඔබන්න:</p>
+                <a id="external-link" href="#" target="_blank" class="btn-direct">Direct Stream එක බලන්න</a>
             </div>
         </div>
 
-        <div class="row row-cols-2 row-cols-md-4 g-3">
+        <div class="row row-cols-2 row-cols-md-4 g-4 mb-5">
             
-            <div class="col" onclick="startPlay('https://itn.itnapi.atndigital.com/itn/live/playlist.m3u8', 'ITN TV')">
-                <div class="card channel-card h-100">
+            <div class="col" onclick="changeTV('https://itn.itnapi.atndigital.com/itn/live/playlist.m3u8', 'ITN Sri Lanka', false)">
+                <div class="card channel-card">
                     <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/ITN_Logo_Sri_Lanka.png" class="card-img-top">
-                    <div class="card-body text-center p-2"><h6>ITN TV</h6></div>
+                    <div class="card-body p-2"><p class="card-title">ITN TV</p></div>
                 </div>
             </div>
 
-            <div class="col" onclick="startPlay('https://watch.livecricketsl.xyz/live/dtv.php?id=ZRRwXzo/C1w=', 'Dialog TV (Data Free)')">
-                <div class="card channel-card h-100">
+            <div class="col" onclick="changeTV('https://watch.livecricketsl.xyz/live/dtv.php?id=ZRRwXzo/C1w=', 'Dialog TV (Free Data)', true)">
+                <div class="card channel-card">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Dialog_Axiata_logo.svg/1200px-Dialog_Axiata_logo.svg.png" class="card-img-top">
-                    <div class="card-body text-center p-2"><h6>Dialog TV</h6><span class="badge bg-success">FREE DATA</span></div>
+                    <div class="card-body p-2">
+                        <p class="card-title">Dialog TV</p>
+                        <center><span class="badge bg-success">DATA FREE</span></center>
+                    </div>
                 </div>
             </div>
 
-            <div class="col" onclick="startPlay('https://derana.itnapi.atndigital.com/derana/live/playlist.m3u8', 'TV Derana')">
-                <div class="card channel-card h-100">
+            <div class="col" onclick="changeTV('https://stream.maharaja.atndigital.com/sirasa/live/playlist.m3u8', 'Sirasa TV', false)">
+                <div class="card channel-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Sirasa_TV_logo.png" class="card-img-top">
+                    <div class="card-body p-2"><p class="card-title">Sirasa TV</p></div>
+                </div>
+            </div>
+
+            <div class="col" onclick="changeTV('https://derana.itnapi.atndigital.com/derana/live/playlist.m3u8', 'TV Derana', false)">
+                <div class="card channel-card">
                     <img src="https://www.tvderana.lk/images/derana_logo.png" class="card-img-top">
-                    <div class="card-body text-center p-2"><h6>Derana</h6></div>
+                    <div class="card-body p-2"><p class="card-title">TV Derana</p></div>
                 </div>
             </div>
 
@@ -70,22 +82,22 @@
 
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script>
-        var player = videojs('my-video');
+        var myPlayer = videojs('tv-player');
 
-        function startPlay(url, name) {
-            document.getElementById('player-container').style.display = 'block';
-            document.getElementById('channel-name').innerText = name;
-            document.getElementById('external-link').href = url;
-
-            // සයිට් එකක් නම් (PHP ලින්ක් නම්) කෙලින්ම ප්ලේ වෙන්නේ නැහැ, ඒ නිසා අපි චෙක් කරනවා
-            if(url.includes('.m3u8')) {
-                player.src({ src: url, type: 'application/x-mpegURL' });
-                player.play();
+        function changeTV(url, name, isDirect) {
+            document.getElementById('ch-name').innerText = name;
+            
+            if(isDirect) {
+                // PHP හෝ වෙනත් security ලින්ක් නම් බට්න් එක පෙන්වන්න
+                myPlayer.pause();
+                document.getElementById('direct-btn-area').style.display = 'block';
+                document.getElementById('external-link').href = url;
+                window.open(url, '_blank'); // අලුත් ටැබ් එකකත් open කරයි
             } else {
-                // PHP හෝ වෙනත් ලින්ක් එකක් නම්, යූසර්ට Direct බට්න් එක ඔබන්න කියනවා
-                player.pause();
-                alert("මෙම නාලිකාව 'Data Free' බැවින් ආරක්ෂිත හේතු මත එය වෙනම ටැබ් එකක විවෘත වේ.");
-                window.open(url, '_blank');
+                // සාමාන්‍ය M3U8 ලින්ක් නම් player එකේ ප්ලේ කරන්න
+                document.getElementById('direct-btn-area').style.display = 'none';
+                myPlayer.src({ src: url, type: 'application/x-mpegURL' });
+                myPlayer.play();
             }
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
